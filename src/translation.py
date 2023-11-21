@@ -1,4 +1,3 @@
-import os
 import deepl
 
 from .util import get_config
@@ -15,7 +14,9 @@ class Translator:
         self.translator = deepl.Translator(auth_key)
 
     def translate(self,phrase):
-       
+        """ Translate given phrase with deepl
+        return the translation
+        """
         #Translate with deepl
         result = self.translator.translate_text(phrase, source_lang=self.source_language,target_lang=self.target_language)
         return result.text

@@ -1,5 +1,5 @@
-import yaml
 import os
+import yaml
 
 def get_config():
     """ Given a filename,
@@ -12,4 +12,3 @@ def get_config():
             return yaml.safe_load(f)
     except FileNotFoundError:
         print(f"file {filename} not found")
-

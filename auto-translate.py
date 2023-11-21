@@ -1,5 +1,4 @@
 import argparse
-import sys
 import os
 import win32api
 import webview
@@ -36,7 +35,7 @@ server.start()
 
 window = webview.create_window('Woah dude!',"http://localhost:8000/",width=1200,height=100,x=0,y=0,on_top=True)
 
-def signal_handler(sig, frame=None):
+def signal_handler(_sig, _frame=None):
     print('You pressed Ctrl+C!')
     #window.destroy()
     os._exit(0)
@@ -45,7 +44,7 @@ win32api.SetConsoleCtrlHandler(signal_handler, True)
 
 
 def on_closed():
-    print('pywebview window is closed')
+    print('window is closed')
     os._exit(0)
 
 

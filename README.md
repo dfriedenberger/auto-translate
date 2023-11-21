@@ -23,5 +23,5 @@ deepl:
 
 ### Start
 ```
-python server.py --input-language en --output-language de
+python auto-translate.py --input-language en --output-language de
 ```

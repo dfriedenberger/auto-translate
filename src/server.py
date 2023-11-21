@@ -1,7 +1,7 @@
 
 import asyncio
-import uvicorn
 import threading
+import uvicorn
 
 from fastapi import FastAPI, WebSocket, Request
 from fastapi.staticfiles import StaticFiles
@@ -32,14 +32,14 @@ class WebServer(threading.Thread):
 
     def _health(self):
         return {"Status": "UP"}
-    
+
     async def websocket_endpoint(self,websocket: WebSocket):
         await websocket.accept()
         try:
-            old_text = self.clip_board_listener._get_clip_board_text()
+            old_text = self.clip_board_listener.get_clip_board_text()
             print(old_text)
             while True:
-                text = self.clip_board_listener._get_clip_board_text()
+                text = self.clip_board_listener.get_clip_board_text()
                 if old_text == text:
                     await asyncio.sleep(1.0)
                     continue
@@ -53,7 +53,7 @@ class WebServer(threading.Thread):
                 await websocket.send_text(translated)
         except:
             print("Exception for websocket")
-    
+
 
     def run(self):
         app = FastAPI(openapi_url='/openapi.json',)
@@ -61,4 +61,3 @@ class WebServer(threading.Thread):
         app.mount("/static", StaticFiles(directory="htdocs",html = True), name="static")
 
         uvicorn.run(app, host=self.host, port=self.port,ws_ping_interval=5,ws_ping_timeout=5)
- 
