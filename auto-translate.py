@@ -25,6 +25,7 @@ def parse_args():
     return args.input_language, args.output_language
 
 
+
 input_language, output_language = parse_args()
 
 
@@ -49,4 +50,4 @@ def on_closed():
 
 
 window.events.closed += on_closed
-webview.start(debug=False)
+webview.start(debug=True)

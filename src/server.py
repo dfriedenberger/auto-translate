@@ -2,7 +2,7 @@
 import asyncio
 import threading
 import uvicorn
-
+import logging
 from fastapi import FastAPI, WebSocket, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -10,6 +10,8 @@ from fastapi import APIRouter
 
 from .clipboard import ClipBoardListener
 from .translation import Translator
+
+logging.basicConfig(level=logging.INFO)
 
 class WebServer(threading.Thread):
 
@@ -37,7 +39,7 @@ class WebServer(threading.Thread):
         await websocket.accept()
         try:
             old_text = self.clip_board_listener.get_clip_board_text()
-            print(old_text)
+            logging.info(f"Open Connection clipboard:{old_text}")
             while True:
                 text = self.clip_board_listener.get_clip_board_text()
                 if old_text == text:
@@ -46,14 +48,16 @@ class WebServer(threading.Thread):
                 old_text = text
 
                 text = text.replace('\n', ' ').replace('\r', '')
-                print("text:",text)
+                logging.info(f"Text :{text}")
                 translated = self.translator.translate(text)
-
-                print("translated:",translated)
+                logging.info(f"Translated :{translated}")
                 await websocket.send_text(translated)
-        except:
-            print("Exception for websocket")
-
+        except Exception as e:
+            logging.error(e)
+        try:
+            await websocket.close()
+        except Exception as e:
+            logging.error(e)
 
     def run(self):
         app = FastAPI(openapi_url='/openapi.json',)
