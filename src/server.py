@@ -27,6 +27,7 @@ class WebServer(threading.Thread):
 
         self.translator = Translator(input_language,output_language)
         self.clip_board_listener = ClipBoardListener()
+        self.clip_board_listener.print_available_formats()
 
 
     def hello_world(self,request: Request,):

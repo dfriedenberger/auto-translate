@@ -19,14 +19,18 @@ def parse_args():
                         metavar="OUTPUT_LANGUAGE",
                         choices=['de', 'en', 'es'],
                         help="language of output file (de,en,es)")
+    parser.add_argument("--debug-console", action='store_true',
+                        help="show debug console")
+
+
 
     args = parser.parse_args()
 
-    return args.input_language, args.output_language
+    return args.input_language, args.output_language, args.debug_console
 
 
 
-input_language, output_language = parse_args()
+input_language, output_language , debug = parse_args()
 
 
 
@@ -50,4 +54,4 @@ def on_closed():
 
 
 window.events.closed += on_closed
-webview.start(debug=True)
+webview.start(debug=debug)
