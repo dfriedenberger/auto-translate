@@ -29,23 +29,10 @@ def parse_args():
     return args.input_language, args.output_language, args.debug_console
 
 
-
-input_language, output_language , debug = parse_args()
-
-
-
-server = WebServer("127.0.0.1",8000,input_language,output_language)
-server.start()
-
-
-window = webview.create_window('Woah dude!',"http://localhost:8000/",width=1200,height=100,x=0,y=0,on_top=True)
-
 def signal_handler(_sig, _frame=None):
     print('You pressed Ctrl+C!')
-    #window.destroy()
+    # window.destroy()
     os._exit(0)
-
-win32api.SetConsoleCtrlHandler(signal_handler, True)
 
 
 def on_closed():
@@ -53,5 +40,19 @@ def on_closed():
     os._exit(0)
 
 
+input_language, output_language, debug = parse_args()
+
+server = WebServer("127.0.0.1", 8000, input_language, output_language)
+server.start()
+
+
+window = webview.create_window('Woah dude!', "http://localhost:8000/", width=1200, height=100, x=0, y=0, on_top=True)
+
+win32api.SetConsoleCtrlHandler(signal_handler, True)
+
+window.events.minimized += server.pause
+window.events.restored += server.resume
 window.events.closed += on_closed
+
+
 webview.start(debug=debug)
